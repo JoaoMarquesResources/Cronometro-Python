@@ -1,1 +1,1 @@
-# typing-speed-test-Python
+# Cronômetro-Python
