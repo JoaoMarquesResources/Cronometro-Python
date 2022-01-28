@@ -25,7 +25,11 @@ global tempo
 global rodar
 global contador
 global limitador
+global executar
+global PodeReiniciar
 
+PodeReiniciar = False
+executar = True
 limitador = 59
 tempo = "00:00:00"
 rodar = False
@@ -37,11 +41,13 @@ def iniciar():
     global tempo
     global contador
     global limitador
+    global PodeReiniciar
     #Se a variavel rodar = true (está em False) irá ficar True na função start() e irá ficar False na função de pausar()
     if rodar:
         #Se o contador for menor ou igual a -1 (o contador começa em -5)
         #Antes do cronometro começar
         if contador <= -1:
+            PodeReiniciar = False
             #str(contador) para o contador se transformar em string para dar para adicionar ao 'Comecando em: '
             inicio = 'Comecando em: ' + str(contador)
             #Dizer que o texto do tempo vai ser = à variavel inicio
@@ -52,6 +58,7 @@ def iniciar():
             label_tempo['fg'] = cor4
         #Começando o cronometro
         else:
+            PodeReiniciar = True
             label_tempo['font'] = 'Times 50 bold'
 
             temporario = str(tempo)
@@ -89,25 +96,34 @@ def iniciar():
 #função start para dar inicio à função iniciar
 def start():
     global rodar
+    global executar
     #Dizer que a variavel rodar = True para que o if rodar: na função iniciar() consiga ser executado
-    rodar = True
-    #executando a função iniciar
-    iniciar()
+    #este if serve para certificar que não se pode spamar o iniciar
+    if executar == True:
+        rodar = True
+        #executando a função iniciar
+        iniciar()
+        executar = False
 
 #função do botão pausar
 def pausar():
     global rodar
+    global executar
     #Se dizermos que o rodar é = False estamos a parar o cronometro porque ele só "roda" se for True (ver isso na função iniciar)
+    executar = True
     rodar = False
 
 #função reiniciar
 def reiniciar():
     global tempo
     global contador
-    #reiniciando o contador e o tempo
-    contador = 0
-    tempo = "00:00:00"
-    label_tempo['text'] = tempo
+    global PodeReiniciar
+
+    if PodeReiniciar == True:
+        #reiniciando o contador e o tempo
+        contador = 0
+        tempo = "00:00:00"
+        label_tempo['text'] = tempo
 
 #----------------------------Criando labels--------------------------------
 
