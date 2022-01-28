@@ -24,7 +24,9 @@ janela.resizable(width=FALSE, height=FALSE)
 global tempo
 global rodar
 global contador
+global limitador
 
+limitador = 59
 tempo = "00:00:00"
 rodar = False
 contador = -5
@@ -34,7 +36,8 @@ contador = -5
 def iniciar():
     global tempo
     global contador
-    #Se a variavel rodar = true (está em False) irá ficar True na função start()
+    global limitador
+    #Se a variavel rodar = true (está em False) irá ficar True na função start() e irá ficar False na função de pausar()
     if rodar:
         #Se o contador for menor ou igual a -1 (o contador começa em -5)
         #Antes do cronometro começar
@@ -46,14 +49,37 @@ def iniciar():
             #Dizer que a fonte do tempo vai ser = Roboto 12
             label_tempo['font'] = 'Roboto 12'
             #Dizer que o fg do tempo vai ser = à cor
-            label_tempo['fg'] = cor6
+            label_tempo['fg'] = cor4
         #Começando o cronometro
         else:
             label_tempo['font'] = 'Times 50 bold'
 
             temporario = str(tempo)
-            #o map vai scanear a variável temporario
+            #o map vai scanear a variável temporario e quando encontrar o ":" ele vai separar o 00 assim fica h = 00 (primeiros 00), m = 00 (segundos 00), s = 00 (terceiros 00) 
             h, m, s = map(int, temporario.split(":"))
+            h = int(h) #transformar a string em int
+            m = int(m)
+            s = int(contador)
+
+            #Se os segundos chegarem a 59
+            if s >= limitador:
+                #resetar o contador
+                contador = 0
+                #Aumentar o numero de minutos
+                m += 1
+
+            
+            s = str(0) + str(s)
+            m = str(0) + str(m)
+            h = str(0) + str(h)
+
+            #Atualizando os valores
+            #temporario vai voltar ao formato 00:00:00
+            #h[-2] é para pegar os dois ultimos characteres da string
+            temporario = str(h[-2:]) + ":" + str(m[-2:]) + ":" + str(s[-2:])
+            label_tempo['text'] = temporario
+            tempo = temporario
+
 
         # after (depois) de 1000 milisegundos (1 segundo) executa o iniciar()
         label_tempo.after(1000, iniciar)
@@ -67,6 +93,21 @@ def start():
     rodar = True
     #executando a função iniciar
     iniciar()
+
+#função do botão pausar
+def pausar():
+    global rodar
+    #Se dizermos que o rodar é = False estamos a parar o cronometro porque ele só "roda" se for True (ver isso na função iniciar)
+    rodar = False
+
+#função reiniciar
+def reiniciar():
+    global tempo
+    global contador
+    #reiniciando o contador e o tempo
+    contador = 0
+    tempo = "00:00:00"
+    label_tempo['text'] = tempo
 
 #----------------------------Criando labels--------------------------------
 
@@ -88,11 +129,11 @@ botao_iniciar = Button(janela, command=start, text='Iniciar', font=('Ivy 8 bold'
 #"criar" o botão
 botao_iniciar.place(x=20, y=130)
 
-botao_pausar = Button(janela, text='Pausar', font=('Ivy 8 bold'), relief='raised', overrelief='sunken', width=10, height=2, bg=cor1, fg=cor2)
+botao_pausar = Button(janela, command=pausar, text='Pausar', font=('Ivy 8 bold'), relief='raised', overrelief='sunken', width=10, height=2, bg=cor1, fg=cor2)
 #"criar" o botão
 botao_pausar.place(x=105, y=130)
 
-botao_reiniciar = Button(janela, text='Reiniciar', font=('Ivy 8 bold'), relief='raised', overrelief='sunken', width=10, height=2, bg=cor1, fg=cor2)
+botao_reiniciar = Button(janela, command=reiniciar, text='Reiniciar', font=('Ivy 8 bold'), relief='raised', overrelief='sunken', width=10, height=2, bg=cor1, fg=cor2)
 #"criar" o botão
 botao_reiniciar.place(x=190, y=130)
 
