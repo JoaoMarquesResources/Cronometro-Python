@@ -42,6 +42,7 @@ def iniciar():
     global contador
     global limitador
     global PodeReiniciar
+    tempo = "00:00:00"
     #Se a variavel rodar = true (está em False) irá ficar True na função start() e irá ficar False na função de pausar()
     if rodar:
         #Se o contador for menor ou igual a -1 (o contador começa em -5)
@@ -74,7 +75,12 @@ def iniciar():
                 contador = 0
                 #Aumentar o numero de minutos
                 m += 1
-
+                #Se os minutos forem = 60
+                if m == 60:
+                    #Aumenta a hora
+                    h += 1
+                    #Reseta os minutos
+                    m = 0
             
             s = str(0) + str(s)
             m = str(0) + str(m)
