@@ -1,8 +1,11 @@
-oi = 5
+teste = True
 
-#função pede um numero (num)
-def calculo(num, num2):
-    print(num + num2)
+#enquanto teste é diferente de False que é True
+while teste != False:
+    resposta = int(input("Se digitar o número 0, o programa irá parar: "))
 
-#executar a função
-calculo(oi, oi)
+    if resposta == 0:
+        #podes fazer um break para parar o loop
+        break
+        #ou podes por a variavel teste para False (irá parar o loop pq é while o teste for True)
+        teste = False
