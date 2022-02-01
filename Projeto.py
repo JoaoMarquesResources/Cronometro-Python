@@ -20,6 +20,8 @@ janela.configure(bg=cor1)
 #bloquear a propriedade que nos premite alterar as dimensões da janela (durante a execução do programa)
 janela.resizable(width=FALSE, height=FALSE)
 
+#---------------------------Funções dos botões-------------------------------
+
 #definindo variaveis globais (para ser possivel usar as funções dentro e fora das funções e do programa / em todo o programa)
 global tempo
 global rodar
